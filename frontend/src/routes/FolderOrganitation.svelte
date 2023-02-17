@@ -243,5 +243,4 @@
   {/if}
 </LoadingStop>
 
-<style>
-</style>
+
