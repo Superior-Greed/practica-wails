@@ -49,21 +49,21 @@ func ToStringBase64(s string, wg *sync.WaitGroup, m *sync.RWMutex, list *[]Image
 
 	m.RLock()
 	bytes, err := ioutil.ReadFile(s)
-	dates := strings.Split(s, "/")
+	// dates := strings.Split(s, "/")
 
 	if err != nil {
 		log.Fatal(err)
 	}
-	path, err := os.Getwd()
-	if err != nil {
-		log.Println(err)
-	}
+	// path, err := os.Getwd()
+	// if err != nil {
+	// 	log.Println(err)
+	// }
 
-	os.Mkdir(path+"/frontend/src/assets/image", 0777)
-	ioutil.WriteFile(fmt.Sprintf(path+"/frontend/src/assets/image/tem-%s", dates[len(dates)-1]), bytes, 0777)
-	if err != nil {
-		log.Println(err)
-	}
+	// os.Mkdir(path+"/frontend/src/assets/image", 0777)
+	// ioutil.WriteFile(fmt.Sprintf(path+"/frontend/src/assets/image/tem-%s", dates[len(dates)-1]), bytes, 0777)
+	// if err != nil {
+	// 	log.Println(err)
+	// }
 
 	m.RUnlock()
 	m.Lock()
@@ -83,10 +83,10 @@ func ToStringBase64(s string, wg *sync.WaitGroup, m *sync.RWMutex, list *[]Image
 	base64Encoding += ToBase64(bytes)
 
 	*list = append(*list, ImagesRouteBase64{
-		Base64:        base64Encoding,
-		Url:           s,
-		UrlServer:     fmt.Sprintf("/src/assets/image/tem-%s", dates[len(dates)-1]),
-		UrlServerPath: fmt.Sprintf(path+"/frontend/src/assets/image/tem-%s", dates[len(dates)-1]),
+		Base64: base64Encoding,
+		Url:    s,
+		//UrlServer:     fmt.Sprintf("/src/assets/image/tem-%s", dates[len(dates)-1]),
+		///UrlServerPath: fmt.Sprintf(path+"/frontend/src/assets/image/tem-%s", dates[len(dates)-1]),
 	})
 	m.Unlock()
 
@@ -111,14 +111,14 @@ func (x *Image) Images() []ImagesRouteBase64 {
 		log.Fatal(err)
 	}
 
-	if len(selection) > 0 {
-		path, err := os.Getwd()
-		if err != nil {
-			log.Println(err)
-		}
+	// if len(selection) > 0 {
+	// 	path, err := os.Getwd()
+	// 	if err != nil {
+	// 		log.Println(err)
+	// 	}
 
-		os.RemoveAll(path + "/frontend/src/assets/image")
-	}
+	// 	os.RemoveAll(path + "/frontend/src/assets/image")
+	// }
 	list := &[]ImagesRouteBase64{}
 
 	wg.Add(len(selection))

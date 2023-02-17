@@ -3,10 +3,9 @@ package main
 import (
 	"embed"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
-
-	"io/ioutil"
 
 	controller "changeme/backend/controller"
 
@@ -27,12 +26,10 @@ func main() {
 	if err_path != nil {
 		fmt.Println(err_path)
 	}
-	os.RemoveAll(path + "/frontend/src/assets/image")
-	os.Mkdir(path+"/frontend/src/assets/image", 0777)
 	organizador := controller.NewImage()
 	qr := controller.NewQr()
 	app := NewApp(organizador, qr)
-	icon, problem := ioutil.ReadFile("./build/Greed3.png")
+	icon, problem := ioutil.ReadFile(path + "/build/appicon.png")
 	if problem != nil {
 		log.Fatal(problem)
 	}

@@ -3,12 +3,10 @@ package controller
 import (
 	"context"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"sync"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -84,17 +82,15 @@ func GeneratePath(inicial string, final string) string {
 
 func (x *Qr) ReturnImage() string {
 	file := FileDialong(&x.ctx)
-	fmt.Println(file)
 	if file != "" {
-		image := strings.Split(file, "/")
-		path := Path()
-		folder := GeneratePath(path, "frontend/src/assets/image/Tem")
-		image_rute := GeneratePath(folder, image[len(image)-1])
-		fmt.Println(image_rute)
-		CreateFolder(folder)
+		// image := strings.Split(file, "/")
+		// path := Path()
+		// folder := GeneratePath(path, "frontend/src/assets/image/Tem")
+		// image_rute := GeneratePath(folder, image[len(image)-1])
+		// CreateFolder(folder)
 		bytes := ImageBytes(file)
-		MoveImageToFolder(image_rute, bytes)
-		return GeneratePath("src/assets/image/Tem", image[len(image)-1])
+		// MoveImageToFolder(image_rute, bytes)
+		return fmt.Sprintf("data:image/png;base64,%s", ToBase64(bytes)) ///GeneratePath("src/assets/image/Tem", image[len(image)-1])
 	}
 	return ""
 }
@@ -104,19 +100,24 @@ func ImageGenerateToUrl(url string, name string) string {
 	if err != nil {
 		fmt.Println(err)
 	}
-	defer resp.Body.Close()
 
-	path := Path()
-	folder := GeneratePath(path, "frontend/src/assets/image/Tem")
-	CreateFolder(folder)
-	file, err := os.Create(GeneratePath(folder, name))
+	bytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatalln(err.Error())
 	}
-	defer file.Close()
+	defer resp.Body.Close()
+	return fmt.Sprintf("data:image/png;base64,%s", ToBase64(bytes))
+	// path := Path()
+	// folder := GeneratePath(path, "frontend/src/assets/image/Tem")
+	// CreateFolder(folder)
+	// file, err := os.Create(GeneratePath(folder, name))
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// defer file.Close()
 
-	io.Copy(file, resp.Body)
-	return GeneratePath("src/assets/image/Tem", name)
+	// io.Copy(file, resp.Body)
+	// return GeneratePath("src/assets/image/Tem", name)
 }
 
 func (x *Qr) ImageUrl(url string, name string) string {
@@ -125,27 +126,43 @@ func (x *Qr) ImageUrl(url string, name string) string {
 
 func AsyncImageUrlList(url string, name string, list *[]string, wg *sync.WaitGroup, wm *sync.RWMutex) {
 
+	// wm.RLock()
+	// resp, err := http.Get(url)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// defer resp.Body.Close()
+
+	// path := Path()
+	// folder := GeneratePath(path, "frontend/src/assets/image/Tem")
+	// wm.RUnlock()
+	// wm.Lock()
+	// CreateFolder(folder)
+	// file, err := os.Create(GeneratePath(folder, name))
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// defer file.Close()
+
+	// io.Copy(file, resp.Body)
+
+	// *list = append(*list, GeneratePath("src/assets/image/Tem", name))
+	// wm.Unlock()
+	// wg.Done()
 	wm.RLock()
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Println(err)
 	}
 	defer resp.Body.Close()
-
-	path := Path()
-	folder := GeneratePath(path, "frontend/src/assets/image/Tem")
+	bytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
 	wm.RUnlock()
 	wm.Lock()
-	CreateFolder(folder)
-	file, err := os.Create(GeneratePath(folder, name))
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer file.Close()
 
-	io.Copy(file, resp.Body)
-
-	*list = append(*list, GeneratePath("src/assets/image/Tem", name))
+	*list = append(*list, fmt.Sprintf("data:image/png;base64,%s", ToBase64(bytes)))
 	wm.Unlock()
 	wg.Done()
 }
@@ -156,13 +173,11 @@ func (x *Qr) ImageUrlList(url []string, name []string) []string {
 	wm := &sync.RWMutex{}
 	wg.Add(len(url))
 	for i := 0; i < len(url); i++ {
-		fmt.Println(url[i], name[i])
 		AsyncImageUrlList(url[i], name[i], &list, wg, wm)
 	}
 	wg.Wait()
 	// for i := 0; i < len(url); i++ {
 	// 	list = append(list, ImageGenerateToUrl(url[i], name[i]))
 	// }
-	fmt.Println(list)
 	return list
 }

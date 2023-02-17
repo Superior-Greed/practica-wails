@@ -92,9 +92,7 @@
     imagenes_list = imagenes_list.filter((x) => x.url != direction);
     if ((direction.trim() != "", rute.trim() != "")) {
       const r = await TransferImageToFolder(namefolder.carpet, direction, rute);
-      console.log(r);
       const data = await r;
-      console.log(data);
       Display(data.text,data.value)
     }
   }
@@ -133,7 +131,7 @@
           <img
             loading="lazy"
             class="border-4 border-red-600 h-full w-8/12 m-1 "
-            src={file.url_server}
+            src={file.base64}
             alt="d"
           />
           <div
@@ -155,5 +153,3 @@
   </div>
 </LoadingStop>
 
-<style>
-</style>
