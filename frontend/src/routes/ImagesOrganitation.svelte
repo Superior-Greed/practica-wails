@@ -131,7 +131,7 @@
           <img
             loading="lazy"
             class="border-4 border-red-600 h-full w-8/12 m-1 "
-            src={file.base64}
+            src={file.url_server}
             alt="d"
           />
           <div
