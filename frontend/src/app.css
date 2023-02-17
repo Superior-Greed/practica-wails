@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes open-2-12 {
+    0%, 50% {
+        opacity: 0.1;
+        width:  8.33%;
+    }
+    50%,99%{
+        opacity: 1;
+        width: 16.666%;
+    }
+}
+
+@keyframes open-3-12 {
+    0%, 50% {
+        opacity: 0.1;
+        width:  8.33%;
+    }
+    50%,99%{
+        opacity: 1;
+        width: 25%;
+    }
+}
+
+@keyframes close-2-12 {
+    0%, 50% {
+      opacity: 0.1;
+      width: 16.66%;
+    }
+    50%,99%{
+        opacity: 1;
+        width: 8.33%;
+    }
+}
+
+@keyframes close-3-12 {
+    0%, 50% {
+      opacity: 0.1;
+      width: 25%;
+    }
+    50%,99%{
+        opacity: 1;
+        width: 8.33%;
+    }
+}
+
+
+/*****/
+
+@keyframes pc-open-2-12 {
+    0%, 50% {
+        opacity: 0.5;
+        width:  91.67%;
+    }
+    50%,99%{
+        opacity: 1;
+        width: 83.334%;
+    }
+}
+
+@keyframes pc-open-3-12 {
+    0%, 50% {
+        opacity: 0.5;
+        width: 91.67%;
+    }
+    50%,99%{
+        opacity: 1;
+        width: 75%;
+    }
+}
+
+@keyframes pc-close-2-12 {
+    0%, 50% {
+      opacity: 0.5;
+      width: 83.334%;
+    }
+    50%,99%{
+        opacity: 1;
+        width: 91.67%;
+    }
+}
+
+@keyframes pc-close-3-12 {
+    0%, 50% {
+      opacity: 0.5;
+      width: 75%;
+    }
+    50%,99%{
+        opacity: 1;
+        width: 91.67%;
+    }
+}
+
+
+@keyframes loadin-animatio {
+    0%, 25% {
+        border-top-color: rgb(49 46 129);
+        color:rgb(87, 82, 240)
+    }
+    25%,50%{
+        border-right-color: rgb(127 29 29 );
+        color:rgb(190, 40, 40) ;
+    }
+    50%,75%{
+        border-bottom-color: rgb(30 58 138);
+        color: rgb(131, 199, 42);
+    }
+    75%,100%{
+        border-left-color: rgb(22 78 99);
+        color: rgb(29, 145, 187);
+    }
+}
+
+
+@layer components{
+
+    .open-animation-w-2-12{
+        animation: open-2-12 3s 
+    }
+    .open-animation-w-3-12{
+        animation: open-3-12 3s 
+    }
+    .close-animation-w-2-12{
+        animation: close-2-12 3s 
+    }
+    .close-animation-w-3-12{
+        animation: close-3-12 3s 
+    }
+
+    /**/
+
+    .pc-open-animation-w-2-12{
+        animation: pc-open-2-12 3s 
+    }
+    .pc-open-animation-w-3-12{
+        animation: pc-open-3-12 3s 
+    }
+    .pc-close-animation-w-2-12{
+        animation: pc-close-2-12 3s 
+    }
+    .pc-close-animation-w-3-12{
+        animation: pc-close-3-12 3s 
+    }
+
+    .loadin-animation{
+        animation: loadin-animatio 2s  infinite;
+        animation-direction: unset
+    }
+}
